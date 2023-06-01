@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Entity
-@Table(name = "ORDER")
+@Table(name = "order_details")
 @NoArgsConstructor
 @AllArgsConstructor
 @Setter
@@ -18,15 +18,14 @@ public class Order {
     @Id
     private int id;
     private LocalDate orderDate;
-    @ManyToOne
-    @JoinColumn(name = "product_id")
+    @OneToMany(mappedBy = "order")
     private List<Product> product;
     private double totalPrice;
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customer customer;
-    @OneToOne
-    @JoinColumn(name = "shipping_address_customer_id")
+    @ManyToOne
+    @JoinColumn(name = "address_id")
     private Address shippingAddress;
     private LocalDate deliveryDate;
     private Status status;

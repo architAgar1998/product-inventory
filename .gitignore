@@ -1,39 +1,49 @@
-HELP.md
-target/
+# Spring Boot specific
+/target/
+/.mvn/
 !.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
 
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
+# IDE specific
+/.idea/
+/.vscode/
 
-### IntelliJ IDEA ###
-.idea
-*.iws
+# Compiled class file
+*.class
+
+# Log files
+*.log
+
+# Package files
+*.jar
+*.war
+*.ear
+
+# Dependency directories
+/lib/
+/boot/
+
+# IDE files
 *.iml
 *.ipr
+*.iws
+/.settings/
 
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
+# Gradle specific
+.gradle/
+/build/
 
-### VS Code ###
-.vscode/
+# Maven specific
+/maven/
+/.repository/
+/target/
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
 
-
-###################
-.mvn
-HELP.md
-
+# Miscellaneous
+*.bak
+*.tmp
+*.swp

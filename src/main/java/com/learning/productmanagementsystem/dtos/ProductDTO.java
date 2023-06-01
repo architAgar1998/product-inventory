@@ -1,21 +1,14 @@
-package com.learning.productmanagementsystem.entites;
+package com.learning.productmanagementsystem.dtos;
 
 import com.learning.productmanagementsystem.constants.Category;
 import com.learning.productmanagementsystem.constants.Country;
-import jakarta.persistence.*;
-import lombok.*;
+import com.learning.productmanagementsystem.entites.Order;
+import lombok.Data;
 
 import java.time.LocalDate;
 
-@Entity
-@Table
-@NoArgsConstructor
-@AllArgsConstructor
-@Setter
-@Getter
-@ToString
-public class Product {
-    @Id
+@Data
+public class ProductDTO implements DTO {
     private int id;
     private String name;
     private double price;
@@ -24,7 +17,5 @@ public class Product {
     private String manufacturedBy;
     private Country origin;
     private Category category;
-    @ManyToOne
-    @JoinColumn(name = "order_id")
     private Order order;
 }
