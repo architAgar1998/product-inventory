@@ -6,15 +6,17 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.io.IOException;
+
 @Data
 @Component
-@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
-public class Response<T extends DTO> {
+//@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class Response<T> {
     private int statusCode;
     private String message;
     private T responseEntity;
 
-    public void setSuccessResponse(T dto) {
+    public void setSuccessResponse(T dto) throws NullPointerException {
         this.setStatusCode(200);
         this.setMessage("Request completed successfully");
         this.setResponseEntity(dto);

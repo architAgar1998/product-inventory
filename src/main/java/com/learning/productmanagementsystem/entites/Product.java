@@ -1,5 +1,6 @@
 package com.learning.productmanagementsystem.entites;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.learning.productmanagementsystem.constants.Category;
 import com.learning.productmanagementsystem.constants.Country;
 import jakarta.persistence.*;
@@ -14,8 +15,10 @@ import java.time.LocalDate;
 @Setter
 @Getter
 @ToString
+@Builder
 public class Product {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
     private double price;

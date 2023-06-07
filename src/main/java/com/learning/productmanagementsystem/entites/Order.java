@@ -16,6 +16,7 @@ import java.util.List;
 @ToString
 public class Order {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private LocalDate orderDate;
     @OneToMany(mappedBy = "order")
