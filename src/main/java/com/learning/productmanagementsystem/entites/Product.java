@@ -16,6 +16,7 @@ import java.time.LocalDate;
 @Getter
 @ToString
 @Builder
+//@Index(name = "", columnList = , unique = false)
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,7 +26,10 @@ public class Product {
     private LocalDate manufacturedDate;
     private int quantity;
     private String manufacturedBy;
+    @Enumerated(EnumType.STRING)
     private Country origin;
+    @Column(name = "category")
+    @Enumerated(EnumType.STRING)
     private Category category;
     @ManyToOne
     @JoinColumn(name = "order_id")

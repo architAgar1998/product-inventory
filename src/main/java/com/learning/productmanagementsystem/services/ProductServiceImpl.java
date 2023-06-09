@@ -3,14 +3,20 @@ package com.learning.productmanagementsystem.services;
 import com.learning.productmanagementsystem.constants.Category;
 import com.learning.productmanagementsystem.dtos.ProductDTO;
 import com.learning.productmanagementsystem.entites.Product;
+import com.learning.productmanagementsystem.exceptions.PageNotFoundException;
 import com.learning.productmanagementsystem.exceptions.ProductNotFoundException;
 import com.learning.productmanagementsystem.mappers.ProductMapper;
 import com.learning.productmanagementsystem.repositories.ProductRepository;
+import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -22,6 +28,19 @@ public class ProductServiceImpl implements ProductService {
     public ProductServiceImpl(ProductRepository productRepository, ProductMapper productMapper) {
         this.productRepository = productRepository;
         this.productMapper = productMapper;
+    }
+
+    @PostConstruct
+    public void createProducts() {
+        Random random = new Random();
+        for (int i = 1; i <= 20; i++) {
+            Product product = Product.builder()
+                    .name("Product" + i)
+                    .price(random.nextDouble())
+                    .category(Category.ELECTRONICS)
+                    .build();
+            productRepository.save(product);
+        }
     }
 
     @Override
@@ -49,8 +68,10 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public List<ProductDTO> get() {
-        return null;
+    public List<ProductDTO> getByPage(int page, int size) {
+        Page<Product> products = productRepository.findAll(PageRequest.of(page, size));
+        Optional<List<ProductDTO>> productDTOS = productMapper.map(products);
+        return productDTOS.orElseThrow(() -> new PageNotFoundException("Page, you are requesting can not be found!."));
     }
 
     @Override
@@ -68,12 +89,16 @@ public class ProductServiceImpl implements ProductService {
         if (productId < 1) {
             throw new IllegalArgumentException("Product Id can not be less then 1. Please provide a valid product id");
         }
+        if (!productRepository.existsById(productId)) {
+            throw new ProductNotFoundException("Product with id " + productId + " does not found");
+        }
         productRepository.deleteById(productId);
-        return true;
+        return !productRepository.existsById(productId);
     }
 
     @Override
     public boolean remove(Category category) {
-        return false;
+        productRepository.deleteByCategory(category);
+        return true;
     }
 }

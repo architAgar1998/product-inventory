@@ -8,7 +8,7 @@ import java.util.List;
 public interface ProductService {
     public ProductDTO create(ProductDTO product);
     public ProductDTO get(int productId);
-    public List<ProductDTO> get();
+    public List<ProductDTO> getByPage(int page, int size);
     public List<ProductDTO> get(Category category);
     public ProductDTO update(ProductDTO product);
     public boolean remove(int productId);
