@@ -3,13 +3,11 @@ package com.learning.productmanagementsystem.controllers;
 import com.learning.productmanagementsystem.constants.Category;
 import com.learning.productmanagementsystem.dtos.ProductDTO;
 import com.learning.productmanagementsystem.dtos.Response;
-import com.learning.productmanagementsystem.entites.Product;
 import com.learning.productmanagementsystem.exceptions.PageNotFoundException;
 import com.learning.productmanagementsystem.exceptions.ProductNotFoundException;
 import com.learning.productmanagementsystem.services.ProductService;
 import jakarta.validation.Valid;
-import jakarta.websocket.server.PathParam;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,14 +15,11 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/products")
+@CrossOrigin(origins = "*")
+@RequiredArgsConstructor
 public class ProductController {
 
     private final ProductService productService;
-
-    @Autowired
-    public ProductController(ProductService productService) {
-        this.productService = productService;
-    }
 
     @PostMapping
     public Response<ProductDTO> create(@Valid @RequestBody ProductDTO product) {
@@ -52,8 +47,8 @@ public class ProductController {
         return productDTOResponse;
     }
 
-    @DeleteMapping
-    public Response<ProductDTO> remove(@RequestParam("productId") int productId) {
+    @DeleteMapping(path = "/{productId}")
+    public Response<ProductDTO> remove(@PathVariable("productId") int productId) {
         Response<ProductDTO> productDTOResponse = new Response<>();
         try {
             boolean removed = productService.remove(productId);
@@ -70,16 +65,18 @@ public class ProductController {
         return productDTOResponse;
     }
 
-    @DeleteMapping("/{category}")
-    public Response<ProductDTO> remove(@PathVariable Category category) {
+    @DeleteMapping("category/{category}")
+    public Response<ProductDTO> remove(@PathVariable("category") Category category) {
         Response<ProductDTO> productDTOResponse = new Response<>();
         try {
-            boolean removed = productService.remove(category);
-            if (removed) {
-                productDTOResponse.setSuccessResponse(null);
+            int count = productService.remove(category);
+            if ((count == 0)) {
+                productDTOResponse.setResponse(HttpStatus.NO_CONTENT.value(), "No Products are available for this category");
+            } else {
+                productDTOResponse.setResponse(HttpStatus.OK.value(), "Products are removed.");
             }
         } catch (Exception exception) {
-            productDTOResponse.setFailureResponse(500, "can not delete " + category + " products");
+            productDTOResponse.setFailureResponse(500, "Can not delete " + category + " products");
             exception.printStackTrace();
         }
         return productDTOResponse;

@@ -12,5 +12,5 @@ public interface ProductService {
     public List<ProductDTO> get(Category category);
     public ProductDTO update(ProductDTO product);
     public boolean remove(int productId);
-    public boolean remove(Category category);
+    public int remove(Category category);
 }

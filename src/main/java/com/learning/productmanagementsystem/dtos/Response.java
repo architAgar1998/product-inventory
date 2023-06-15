@@ -10,12 +10,15 @@ import java.io.IOException;
 
 @Data
 @Component
-//@Scope(value = WebApplicationContext.SCOPE_REQUEST, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Response<T> {
     private int statusCode;
     private String message;
     private T responseEntity;
 
+    public void setResponse(int statusCode, String message) {
+        this.statusCode = statusCode;
+        this.message = message;
+    }
     public void setSuccessResponse(T dto) throws NullPointerException {
         this.setStatusCode(200);
         this.setMessage("Request completed successfully");

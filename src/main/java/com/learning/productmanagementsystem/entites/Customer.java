@@ -12,11 +12,13 @@ import java.util.List;
 @Getter
 @Setter
 @ToString
+@Builder
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
+    @Column(unique = true)
     private String emailAddress;
     private String password;
     private long phoneNo;
